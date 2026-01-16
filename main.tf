@@ -13,17 +13,18 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "terraform-azure-rg" {
-  name     = "terraform-azure-resources"
-  location = "East US"
+  name     = "terraform-azure-${var.environment}-${var.location_short}"
+  location = var.location
   tags = {
-    Environment = "Dev"
+    Environment = var.environment
     Project     = "Terraform Azure"
   }
 }
 
 resource "azurerm_virtual_network" "terraform-azure-vnet" {
-  name                = "terraform-azure-network"
-  location            = azurerm_resource_group.terraform-azure-rg.location
+  name                = "terraform-azure-${var.environment}-${var.location_short}"
+  address_space       = ["10.0.0.0/16"]
+  location            = var.location
   resource_group_name = azurerm_resource_group.terraform-azure-rg.name
 }
   
